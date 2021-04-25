@@ -7,7 +7,7 @@ S.Enemy = styled('div')`
   display:inline-block;
 
   margin: .5rem;
-  width: calc(25% - 1rem);
+  width: 10rem;
 
   ${p => p.isMatched ? css`
     color: ${getColor('green')};

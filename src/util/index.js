@@ -12,6 +12,10 @@ const WORD_LIST = [
   'from!!',
   ' yep',
   'words. ',
+  '0123',
+  '@//',
+  ' 123 ',
+  'HeLL oO'
 ]
 
 export const generateFromWordList = (requested = -1) => {

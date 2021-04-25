@@ -11,6 +11,12 @@ S.Legend = styled('div')`
   li{
     display:block;
   }
+
+  position:absolute;
+  right: 1rem;
+  bottom: calc(100% + 1rem);
+  padding: 1rem;
+  border: 1px solid white;
 `;
 
 S.Untargeted = styled('li')`

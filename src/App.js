@@ -15,12 +15,27 @@ S.Bg = styled('div')`
   top:0;
   right:0;
   bottom:0;
+
+  h1{
+    color:white;
+    font-size:15rem;
+    opacity:.05;
+
+    position:absolute;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+
+    word-break: break-all;
+  }
 `
 
 function App() {
   return (
     <S.Bg>
       <Store>
+        <h1>{'/Regex!nv@ders/'}</h1>
         <Enemies/>
         <Footer/>
       </Store>
