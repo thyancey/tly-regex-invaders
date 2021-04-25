@@ -1,24 +1,30 @@
 import logo from './logo.svg';
 import './App.css';
+import Enemies from './components/enemies';
+import Footer from './components/footer';
+
+import styled from 'styled-components';
+import Store from './store';
+
+const S = {};
+S.Bg = styled('div')`
+  background-color: black;
+
+  position:absolute;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
+`
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <S.Bg>
+      <Store>
+        <Enemies/>
+        <Footer/>
+      </Store>
+    </S.Bg>
   );
 }
 
