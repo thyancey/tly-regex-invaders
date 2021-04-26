@@ -9,6 +9,10 @@ export const getColor = (colorId) => {
   return store.color[colorId];
 }
 
+export const getFont = (fontId) => {
+  return store.font[fontId];
+}
+
 /* from pablo on https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors */
 export const shadeColor = (colId, percent) => {
   var color = store.color[colId] || colId;
@@ -49,7 +53,11 @@ const store = {
     z2: '-0.1rem 0.1rem .25rem .1rem rgba(0,0,0,0.36)',
     z3: '-.2rem .5rem 1rem .2rem rgba(0,0,0,.36)'
   },
-  value:{}
+  value:{},
+  font:{
+    body: `'Roboto Mono', monospace`,
+    fancy: `'Aldrich', sans-serif`
+  }
 }
 
 export default store;

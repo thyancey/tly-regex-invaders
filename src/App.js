@@ -9,6 +9,7 @@ import Store from './store';
 const S = {};
 S.Bg = styled('div')`
   background-color: black;
+  overflow:hidden;
 
   position:absolute;
   left:0;

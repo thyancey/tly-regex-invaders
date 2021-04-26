@@ -49,7 +49,7 @@ S.TextInput = styled('input')`
   }
 `;
 
-S.Output = styled('p')`
+S.Output = styled('div')`
   color: white;
 `;
 

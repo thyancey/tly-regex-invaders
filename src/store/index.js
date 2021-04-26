@@ -3,6 +3,13 @@ import { StoreContext } from './context';
 
 import { generateFromWordList, generateRandomTextEntries, matchThis, regexMatchThis } from '../util';
 
+const getGridPosition = (idx, perRow = 3) => {
+  return {
+    row: Math.floor(idx / perRow),
+    col: idx % perRow
+  }
+}
+
 function Store({children}) {
   const [ loaded, setLoaded ] = useState(false);
   const [ text, setText ] = useState('');
@@ -33,10 +40,12 @@ function Store({children}) {
     setAttackedIdxs(matchedIdxs);
   }, [ activeText, enemies, setAttackedIdxs, mode ]);
 
-  const generateEnemies = useCallback((numEnemies = 6) => {
+  const PER_ROW = 3;
+  const generateEnemies = useCallback((numEnemies = 8) => {
     setEnemies(generateFromWordList(numEnemies).map((tE, i) => ({
       text: tE,
-      idx: i
+      idx: i,
+      position: getGridPosition(i, 4)
     })))
   }, [ setEnemies ]);
   
