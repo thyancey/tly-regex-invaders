@@ -1,8 +1,8 @@
 
 import { useContext } from 'react';
 import styled from 'styled-components';
-import { getColor } from '../util/theme';
-import { StoreContext } from '../store/context';
+import { getColor } from '../../util/theme';
+import { StoreContext } from '../../store/context';
 
 const S = {};
 S.Legend = styled('div')`
@@ -13,8 +13,8 @@ S.Legend = styled('div')`
   }
 
   position:absolute;
-  right: 1rem;
-  bottom: calc(100% + 1rem);
+  left: 1rem;
+  top: 1rem;
   padding: 1rem;
   border: 1px solid white;
 `;
@@ -23,10 +23,10 @@ S.Untargeted = styled('li')`
   color: ${getColor('red')};
 `;
 S.Targeted = styled('li')`
-  color: ${getColor('green')};
+  color: ${getColor('blue')};
 `;
 S.Attacked = styled('li')`
-  color: ${getColor('purple')};
+  color: ${getColor('grey')};
 `;
 
 function Legend({ matchString }) {

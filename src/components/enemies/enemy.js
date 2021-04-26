@@ -1,14 +1,12 @@
 import styled, { css } from 'styled-components';
-import logo from '../logo.svg';
-import { getColor, getFont } from '../util/theme';
+import { getColor } from '../../util/theme';
 
 const WIDTH = 150;
-const SPACER_WIDTH = 50;
+const SPACER_WIDTH = 35;
 
 const S = {};
 S.Enemy = styled('div')`
   position: absolute;
-  ${'' /* display:inline-block; */}
 
   width: ${WIDTH}px;
   height: 100%;
@@ -29,10 +27,10 @@ S.Enemy = styled('div')`
   }
 
   ${p => p.isMatched ? css`
-    color: ${getColor('green')};
-    border-color: ${getColor('green')};
-    box-shadow: 0 0 .5rem .1rem ${getColor('green')};
-    border: .25rem solid ${getColor('green')};
+    color: ${getColor('blue')};
+    border-color: ${getColor('blue')};
+    box-shadow: 0 0 .5rem .1rem ${getColor('blue')};
+    border: .25rem solid ${getColor('blue')};
   `: css`
     color: ${getColor('red')};
     border-color: ${getColor('red')};
@@ -41,10 +39,10 @@ S.Enemy = styled('div')`
   `}
 
   ${p => p.isAttacked && css`
-    color: ${getColor('purple')};
-    border-color: ${getColor('purple')};
-    box-shadow: 0 0 .5rem .1rem ${getColor('purple')};
-    border: .25rem solid ${getColor('purple')};
+    color: ${getColor('grey')};
+    border-color: ${getColor('grey')};
+    box-shadow: 0 0 .5rem .1rem ${getColor('grey')};
+    border: .25rem solid ${getColor('grey')};
     opacity: .5;
   `};
 

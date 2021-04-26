@@ -1,12 +1,12 @@
 
 import { useEffect, useContext, useState, useRef, useMemo } from 'react';
 import styled from 'styled-components';
-import { StoreContext } from '../store/context';
-import { getColor } from '../util/theme';
+import { StoreContext } from '../../store/context';
+import { getColor } from '../../util/theme';
 
 import EnemyGrid from './enemy-grid';
 
-const MAX_WIDTH = 750;
+const MAX_WIDTH = 710;
 const DELTA_X = 50;
 const HEIGHT = 25;
 const BUFFER = 10;
@@ -21,7 +21,7 @@ S.Swarm = styled('div')`
   width:${MAX_WIDTH}px;
   top:1rem;
 
-  transition: left .5s, top .5s;
+  ${'' /* transition: left .5s, top .5s; */}
 
   >ul{
     padding:0;
@@ -36,11 +36,12 @@ S.ActiveText = styled('p')`
 `
 
 const delay = 1;
+const ALLOW_DESCEND = false;
 
 function Enemies({ matchString }) {
   const [ isMoving, setIsMoving ] = useState(false);
   const [ x, setX ] = useState(0);
-  const [ yPos, setYPos ] = useState(-1);
+  const [ yPos, setYPos ] = useState(0);
   const [ direction, setDirection ] = useState(-1);
   const [ windowWidth, setWindowWidth ] = useState(1000);
   const { activeText } = useContext(StoreContext);
@@ -71,8 +72,7 @@ function Enemies({ matchString }) {
         setX(nextX);
       }else{
         setDirection(1);
-        setYPos(yPos + 1);
-        // setX(minX);
+        if(ALLOW_DESCEND) setYPos(yPos + 1);
       }
     }else if(direction > 0){
       /* movin RIGHT */
@@ -83,8 +83,7 @@ function Enemies({ matchString }) {
         setX(nextX);
       }else{
         setDirection(-1);
-        setYPos(yPos + 1);
-        // setX(maxX);
+        if(ALLOW_DESCEND) setYPos(yPos + 1);
       }
     }
 

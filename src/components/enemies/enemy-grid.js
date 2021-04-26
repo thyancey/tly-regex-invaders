@@ -1,8 +1,8 @@
 
 import { useEffect, useContext, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
-import { StoreContext } from '../store/context';
-import { getColor } from '../util/theme';
+import { StoreContext } from '../../store/context';
+import { getColor } from '../../util/theme';
 
 import Enemy from './enemy';
 
@@ -15,7 +15,7 @@ S.Grid = styled('ul')`
 S.Row = styled('div')`
   position:relative;
   height:7rem;
-  margin-top:5rem;
+  margin-top:3rem;
 `
 function EnemyGrid({ matchString }) {
   const { getMatchedEnemies } = useContext(StoreContext);
