@@ -30,7 +30,7 @@ S.Row = styled('div')`
 
   }
 `
-function FriendliesGrid({ matchString }) {
+function FriendliesGrid() {
   const { getMatchedEntities } = useContext(StoreContext);
 
   const sortedGrid = useMemo(() => {

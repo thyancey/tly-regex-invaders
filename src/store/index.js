@@ -116,6 +116,7 @@ function Store({children}) {
   
   const submitText = useCallback((text) => {
     setActiveText(text);
+    setText('');
     startTextTimer();
   }, [ setActiveText, startTextTimer ]);
 
@@ -127,6 +128,7 @@ function Store({children}) {
         entities: entities,
         matchedIdxs: matchedIdxs,
         attackedIdxs: attackedIdxs,
+        killedIdxs: killedIdxs,
         generateEntities: generateEntities,
         getMatchedEntities: getMatchedEntities,
         restartGame: restartGame,

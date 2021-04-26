@@ -25,7 +25,7 @@ S.Row = styled('div')`
   height:7rem;
   margin-top:3rem;
 `
-function HostilesGrid({ matchString }) {
+function HostilesGrid() {
   const { getMatchedEntities } = useContext(StoreContext);
 
   const sortedGrid = useMemo(() => {

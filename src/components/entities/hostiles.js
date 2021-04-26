@@ -46,7 +46,7 @@ S.ActiveText = styled('p')`
 const delay = 1;
 const ALLOW_DESCEND = false;
 
-function Hostiles({ matchString }) {
+function Hostiles() {
   const [ isMoving, setIsMoving ] = useState(false);
   const [ x, setX ] = useState(0);
   const [ yPos, setYPos ] = useState(0);

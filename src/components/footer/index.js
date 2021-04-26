@@ -106,7 +106,7 @@ const onKeyDown = (key, value, submitText) => {
 }
 
 function Footer() {
-  const { updateText, restartGame, submitText, error } = useContext(StoreContext);
+  const { updateText, restartGame, submitText, error, text } = useContext(StoreContext);
 
   const availableItems = [
     {
@@ -145,7 +145,7 @@ function Footer() {
   return (
     <S.Footer>
       <Legend />
-      <S.TextInput error={error} placeholder={'enter a regex and hit enter'} type="text" onChange={(e) => { updateText(e.target.value)}} onKeyDown={e => onKeyDown(e.key, e.target.value, submitText)} />
+      <S.TextInput value={text} error={error} placeholder={'enter a regex and hit enter'} type="text" onChange={(e) => { updateText(e.target.value)}} onKeyDown={e => onKeyDown(e.key, e.target.value, submitText)} />
       <S.StartButton onClick={e => restartGame()}>{'RESTART'}</S.StartButton>
       <S.Available>
         <S.AvailableItem key={-1} active={false}>{'available: '}</S.AvailableItem>
