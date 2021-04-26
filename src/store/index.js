@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { StoreContext } from './context';
 
-import { generateFromWordList, matchWithinThisGroup, DEFAULT_COUNT_ENEMIES, DEFAULT_COUNT_FRIENDLIES, WORD_LIST_HOSTILE, WORD_LIST_FRIENDLY } from '../util';
+import { generateFromWordList, matchWithinThisGroup, DEFAULT_COUNT_HOSTILES, DEFAULT_COUNT_FRIENDLIES, WORD_LIST_HOSTILE, WORD_LIST_FRIENDLY } from '../util';
 
 function Store({children}) {
   const [ loaded, setLoaded ] = useState(false);
@@ -28,7 +28,7 @@ function Store({children}) {
     setAttackedIdxs(matchedIdxs);
   }, [ activeText, entities, setAttackedIdxs ]);
 
-  const generateEntities = useCallback((numEnemies = DEFAULT_COUNT_ENEMIES, numFriendlies = DEFAULT_COUNT_FRIENDLIES) => {
+  const generateEntities = useCallback((numHostiles = DEFAULT_COUNT_HOSTILES, numFriendlies = DEFAULT_COUNT_FRIENDLIES) => {
     let friendlies = generateFromWordList(numFriendlies, WORD_LIST_FRIENDLY).map((tE, i) => {
       return {
         text: tE,
@@ -38,7 +38,7 @@ function Store({children}) {
       };
     });
 
-    let hostiles = generateFromWordList(numEnemies, WORD_LIST_HOSTILE).map((tE, i) => {
+    let hostiles = generateFromWordList(numHostiles, WORD_LIST_HOSTILE).map((tE, i) => {
       return {
         text: tE,
         idx: i + friendlies.length,

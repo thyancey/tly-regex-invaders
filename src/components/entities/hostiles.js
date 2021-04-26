@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { StoreContext } from '../../store/context';
 import { getColor } from '../../util/theme';
 
-import EnemiesGrid from './enemies-grid';
+import HostilesGrid from './hostiles-grid';
 
 const MAX_WIDTH = 750;
 const DELTA_X = 50;
@@ -46,7 +46,7 @@ S.ActiveText = styled('p')`
 const delay = 1;
 const ALLOW_DESCEND = false;
 
-function Enemies({ matchString }) {
+function Hostiles({ matchString }) {
   const [ isMoving, setIsMoving ] = useState(false);
   const [ x, setX ] = useState(0);
   const [ yPos, setYPos ] = useState(0);
@@ -119,11 +119,11 @@ function Enemies({ matchString }) {
 
   return (
     <S.Swarm style={{ left: x, top: topPos }}>
-      <EnemiesGrid />
+      <HostilesGrid />
       <p>{leftPos}</p>
       <S.ActiveText isActive={!!realActiveText}>{realActiveText}</S.ActiveText>
     </S.Swarm>
   );
 }
 
-export default Enemies;
+export default Hostiles;

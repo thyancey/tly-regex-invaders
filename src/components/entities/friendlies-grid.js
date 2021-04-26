@@ -33,7 +33,7 @@ S.Row = styled('div')`
 function FriendliesGrid({ matchString }) {
   const { getMatchedEntities } = useContext(StoreContext);
 
-  const enemyGrid = useMemo(() => {
+  const sortedGrid = useMemo(() => {
     let retVal = [];
     getMatchedEntities('friendly').forEach(e => {
       const position = getGridPosition(e.posIdx, FRIENDLIES_PER_ROW)
@@ -59,7 +59,7 @@ function FriendliesGrid({ matchString }) {
   return (
     <S.Grid>
 
-      { enemyGrid.map((eR, i) => (
+      { sortedGrid.map((eR, i) => (
         <S.Row key={`row-${i}`}>
           { eR.map((e, i) => (
             <Entity 

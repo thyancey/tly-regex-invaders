@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { getColor } from '../util/theme';
 
-import Enemies from './entities/enemies';
+import Hostiles from './entities/hostiles';
 import Friendlies from './entities/friendlies';
 import Footer from './footer';
 import Bg from './bg';
@@ -53,7 +53,7 @@ function Main() {
   return (
     <S.Main >
       <S.Hostiles>
-        <Enemies/>
+        <Hostiles/>
       </S.Hostiles>
       <S.Friendlies>
         <Friendlies/>

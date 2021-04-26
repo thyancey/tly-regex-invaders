@@ -2,7 +2,7 @@
 import { useContext, useMemo } from 'react';
 import styled from 'styled-components';
 import { StoreContext } from '../../store/context';
-import { ENTITY_WIDTH, ENEMIES_PER_ROW } from '../../util';
+import { ENTITY_WIDTH, HOSTILES_PER_ROW } from '../../util';
 
 import Entity from './entity';
 const SPACER_WIDTH = 50;
@@ -25,13 +25,13 @@ S.Row = styled('div')`
   height:7rem;
   margin-top:3rem;
 `
-function EnemyGrid({ matchString }) {
+function HostilesGrid({ matchString }) {
   const { getMatchedEntities } = useContext(StoreContext);
 
-  const enemyGrid = useMemo(() => {
+  const sortedGrid = useMemo(() => {
     let retVal = [];
     getMatchedEntities('hostile').forEach(e => {
-      const position = getGridPosition(e.posIdx, ENEMIES_PER_ROW)
+      const position = getGridPosition(e.posIdx, HOSTILES_PER_ROW)
       if(position.row >= retVal.length){
         retVal.push([{
           ...e,
@@ -53,11 +53,11 @@ function EnemyGrid({ matchString }) {
 
   return (
     <S.Grid>
-      { enemyGrid.map((eR, i) => (
+      { sortedGrid.map((eR, i) => (
         <S.Row key={`row-${i}`}>
           { eR.map((e, i) => (
             <Entity 
-              key={`enemy-${i}`} 
+              key={`hostile-${i}`} 
               type="hostile"
               text={e.text} 
               idx={e.idx}
@@ -77,4 +77,4 @@ function EnemyGrid({ matchString }) {
   );
 }
 
-export default EnemyGrid;
+export default HostilesGrid;

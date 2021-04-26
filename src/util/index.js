@@ -94,8 +94,8 @@ export const matchThisRegex = (str1, regexString, onError) => {
 }
 
 export const ENTITY_WIDTH = 150;
-export const ENEMIES_PER_ROW = 4;
+export const HOSTILES_PER_ROW = 4;
 export const FRIENDLIES_PER_ROW = 3;
 
-export const DEFAULT_COUNT_ENEMIES = 8;
+export const DEFAULT_COUNT_HOSTILES = 8;
 export const DEFAULT_COUNT_FRIENDLIES = 6;
