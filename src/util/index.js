@@ -1,28 +1,33 @@
 const CHARACTERS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-const WORD_LIST = [
-  'hey',
-  'there',
-  'JUST',
-  's0me',
-  'words for',
-  'you',
-  'TO',
-  'p!ck',
-  'from!!',
-  ' yep',
-  'words. ',
-  '0123',
-  '@//',
-  ' 123 ',
-  'HeLL oO'
+export const WORD_LIST_HOSTILE = [
+  'evil',
+  'bad',
+  'ANGRY',
+  'l0ser',
+  'nasty gurl',
+  'angry',
+  '>:(',
+  'sh!t!',
+  'h@te',
+  ' not good ',
+  'bad words. '
 ]
 
-export const generateFromWordList = (requested = -1) => {
+export const WORD_LIST_FRIENDLY = [
+  'friend',
+  'HAPPY PAL',
+  ':D',
+  'g00d b0i',
+  'SmIlE',
+  ' GOOD TIMES '
+]
+
+export const generateFromWordList = (requested = -1, wordList) => {
   let retVal = [];
-  const numEntries = (requested < 0 || requested > WORD_LIST.length) ? WORD_LIST.length : requested;
+  const numEntries = (requested < 0 || requested > wordList.length) ? wordList.length : requested;
   for(let i = 0; i < numEntries; i++){
-    retVal.push( WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)] );
+    retVal.push( wordList[Math.floor(Math.random() * wordList.length)] );
   }
 
   return retVal;
@@ -50,14 +55,6 @@ const getRandomFromString = str => {
   return str[Math.floor(Math.random() * (str.length))]
 }
 
-export const matchThis = (string, text, type, onError) => {
-  if(type === 'regex'){
-    return matchThisRegex(string, text, onError);
-  }else{
-    return matchThisString(string, text);
-  }
-}
-
 export const matchThisString = (str1, str2) => {
   if(!str2){
     return false;
@@ -68,6 +65,18 @@ export const matchThisString = (str1, str2) => {
     return false;
   }
 }
+
+/* assuming group is shape below, only return items with matching idx
+  [
+    {
+      idx:
+    }
+  ]
+*/
+export const matchWithinThisGroup = (group, text, onError) => {
+  return group.filter(g => matchThisRegex(g.text, text, onError)).map(g => g.idx);
+}
+
 
 export const matchThisRegex = (str1, regexString, onError) => {
   if(!regexString){
@@ -83,3 +92,10 @@ export const matchThisRegex = (str1, regexString, onError) => {
     return false;
   }
 }
+
+export const ENTITY_WIDTH = 150;
+export const ENEMIES_PER_ROW = 4;
+export const FRIENDLIES_PER_ROW = 3;
+
+export const DEFAULT_COUNT_ENEMIES = 8;
+export const DEFAULT_COUNT_FRIENDLIES = 6;

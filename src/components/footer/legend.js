@@ -30,11 +30,11 @@ S.Attacked = styled('li')`
 `;
 
 function Legend({ matchString }) {
-  const { enemies, matchedIdxs, attackedIdxs } = useContext(StoreContext);
+  const { entities, matchedIdxs, attackedIdxs } = useContext(StoreContext);
 
   return (
     <S.Legend>
-      <S.Untargeted>{`untargeted: ${ enemies.length - matchedIdxs.length }`}</S.Untargeted>
+      <S.Untargeted>{`untargeted: ${ entities.length - matchedIdxs.length }`}</S.Untargeted>
       <S.Targeted>{`targeted: ${matchedIdxs.length}`}</S.Targeted>
       <S.Attacked>{`attacked: ${attackedIdxs.length}`}</S.Attacked>
     </S.Legend>

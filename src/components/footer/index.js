@@ -1,5 +1,5 @@
 
-import { useContext, useMemo } from 'react';
+import { useContext } from 'react';
 import styled, { css } from 'styled-components';
 import { getColor } from '../../util/theme';
 import { StoreContext } from '../../store/context';
@@ -105,22 +105,15 @@ const onKeyDown = (key, value, submitText) => {
   }
 }
 
-function Footer({ matchString }) {
-  const { text, updateText, restartGame, submitText, error } = useContext(StoreContext);
-
-  const outputDom = useMemo(() => {
-    if(error){
-      return <S.OutputError>{`invalid: / ${error} /`}</S.OutputError>;
-    }else if(text){
-      return <S.OutputText>{`/ ${text} /`}</S.OutputText>
-    }else{
-      return <S.OutputText>{`/ /`}</S.OutputText>
-    }
-  }, [text, error]);
+function Footer() {
+  const { updateText, restartGame, submitText, error } = useContext(StoreContext);
 
   const availableItems = [
     {
-      value: '[]',
+      value: '[',
+      active: true
+    },{
+      value: ']',
       active: true
     },{
       value: 'A',
@@ -136,7 +129,7 @@ function Footer({ matchString }) {
       active: false
     },{
       value: '&',
-      active: false
+      active: true
     },{
       value: '.',
       active: false
@@ -154,9 +147,6 @@ function Footer({ matchString }) {
       <Legend />
       <S.TextInput error={error} placeholder={'enter a regex and hit enter'} type="text" onChange={(e) => { updateText(e.target.value)}} onKeyDown={e => onKeyDown(e.key, e.target.value, submitText)} />
       <S.StartButton onClick={e => restartGame()}>{'RESTART'}</S.StartButton>
-      {/* <S.Output>
-        {outputDom}
-      </S.Output> */}
       <S.Available>
         <S.AvailableItem key={-1} active={false}>{'available: '}</S.AvailableItem>
         {availableItems.map((a,i) => (

@@ -1,10 +1,8 @@
-
-import { useEffect, useContext, useState, useRef, useMemo } from 'react';
 import styled from 'styled-components';
-import { StoreContext } from '../store/context';
 import { getColor } from '../util/theme';
 
-import Enemies from './enemies';
+import Enemies from './entities/enemies';
+import Friendlies from './entities/friendlies';
 import Footer from './footer';
 import Bg from './bg';
 
@@ -33,7 +31,9 @@ S.Hostiles = styled('div')`
 S.Friendlies = styled('div')`
   grid-column: col 1 / span 3;
   grid-row: row 2 / span 1 ;
-  border-bottom: 4px dashed ${getColor('green')}
+  border-bottom: 4px dashed ${getColor('green')};
+
+  position:relative;
   
   ${'' /* border: 2px solid green; */}
 `
@@ -56,6 +56,7 @@ function Main() {
         <Enemies/>
       </S.Hostiles>
       <S.Friendlies>
+        <Friendlies/>
       </S.Friendlies>
       <S.Input>
         <Footer/>

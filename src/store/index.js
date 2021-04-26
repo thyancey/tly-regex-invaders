@@ -1,89 +1,99 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { StoreContext } from './context';
 
-import { generateFromWordList, generateRandomTextEntries, matchThis, regexMatchThis } from '../util';
-
-const getGridPosition = (idx, perRow = 3) => {
-  return {
-    row: Math.floor(idx / perRow),
-    col: idx % perRow
-  }
-}
+import { generateFromWordList, matchWithinThisGroup, DEFAULT_COUNT_ENEMIES, DEFAULT_COUNT_FRIENDLIES, WORD_LIST_HOSTILE, WORD_LIST_FRIENDLY } from '../util';
 
 function Store({children}) {
   const [ loaded, setLoaded ] = useState(false);
   const [ text, setText ] = useState('');
   const [ activeText, setActiveText ] = useState('');
-  const [ enemies, setEnemies ] = useState([]);
+  const [ entities, setEntities ] = useState([]);
   const [ matchedIdxs, setMatchedIdxs ] = useState([]);
   const [ attackedIdxs, setAttackedIdxs ] = useState([]);
+  const [ killedIdxs, setKilledIdxs ] = useState([]);
   const [ killActive, setKillActive ] = useState(false);
-  const [ mode, setMode ] = useState('regex');
   const [ error, setError ] = useState('');
 
   const onError = (e) => {
     setError(e)
   }
 
-  const matchThese = (group, text, type) => {
-    return group.filter(g => matchThis(g.text, text, type, onError)).map(g => g.idx);
-  }
-
-
   useEffect(() => {
-    const matchedIdxs = matchThese(enemies, text, mode);
+    const matchedIdxs = matchWithinThisGroup(entities, text, onError);
     setMatchedIdxs(matchedIdxs);
-  }, [ text, enemies, setMatchedIdxs, mode ]);
+  }, [ text, entities, setMatchedIdxs ]);
 
   useEffect(() => {
-    const matchedIdxs = matchThese(enemies, activeText, mode);
+    const matchedIdxs = matchWithinThisGroup(entities, activeText, onError);
     setAttackedIdxs(matchedIdxs);
-  }, [ activeText, enemies, setAttackedIdxs, mode ]);
+  }, [ activeText, entities, setAttackedIdxs ]);
 
-  const PER_ROW = 3;
-  const generateEnemies = useCallback((numEnemies = 8) => {
-    setEnemies(generateFromWordList(numEnemies).map((tE, i) => ({
-      text: tE,
-      idx: i,
-      position: getGridPosition(i, 4)
-    })))
-  }, [ setEnemies ]);
+  const generateEntities = useCallback((numEnemies = DEFAULT_COUNT_ENEMIES, numFriendlies = DEFAULT_COUNT_FRIENDLIES) => {
+    let friendlies = generateFromWordList(numFriendlies, WORD_LIST_FRIENDLY).map((tE, i) => {
+      return {
+        text: tE,
+        idx: i,
+        posIdx: i,
+        type: 'friendly'
+      };
+    });
+
+    let hostiles = generateFromWordList(numEnemies, WORD_LIST_HOSTILE).map((tE, i) => {
+      return {
+        text: tE,
+        idx: i + friendlies.length,
+        posIdx: i,
+        type: 'hostile'
+      };
+    });
+
+    setEntities(friendlies.concat(hostiles));
+  }, [ setEntities ]);
   
+
   useEffect(() => {
     if(!loaded){
       setLoaded(true);
-      generateEnemies();
+      generateEntities();
     }
-  }, [ loaded, setLoaded, generateEnemies ]); 
+  }, [ loaded, generateEntities ]); 
   
   const restartGame = useCallback(() => {
-    generateEnemies();
-  }, [ setEnemies ]);
+    setMatchedIdxs([]);
+    setKilledIdxs([]);
+    setAttackedIdxs([]);
+    generateEntities();
+  }, [ generateEntities ]);
   
-  const getMatchedEnemies = useCallback(() => {
-    return enemies.map(e => ({
-      ...e,
-      isMatched: matchedIdxs.includes(e.idx),
-      isAttacked: attackedIdxs.includes(e.idx)
-    }));
-  }, [ enemies, matchedIdxs, attackedIdxs ]);
-
-  const removeAttackedEnemies = useCallback(() => {
-    const remaining = enemies.filter(e => !attackedIdxs.includes(e.idx));
-    setEnemies(remaining);
-  }, [ enemies, setEnemies, attackedIdxs ]);
+  const getMatchedEntities = useCallback((type = 'hostile') => {
+    return entities.filter(e => e.type === type).map(e => {
+      const isKilled = killedIdxs.includes(e.idx);
+      return {
+        ...e,
+        isMatched: !isKilled && matchedIdxs.includes(e.idx),
+        isAttacked: !isKilled && attackedIdxs.includes(e.idx),
+        isKilled: isKilled
+      }
+    });
+  }, [ entities, matchedIdxs, attackedIdxs, killedIdxs ]);
 
   useEffect(() => {
     if(killActive){
-      removeAttackedEnemies();
+      let newDeaths = [];
+      attackedIdxs.forEach(idx => {
+        if(!killedIdxs.includes(idx)){
+          newDeaths.push(idx);
+        }
+      });
+  
+      if(newDeaths.length > 0){
+        setKilledIdxs(killedIdxs.concat(newDeaths));
+      }
+
       setKillActive(false);
     }
-  }, [ killActive, setKillActive ]);
+  }, [ killActive, setKillActive, attackedIdxs, killedIdxs, setKilledIdxs ]);
 
-  const submitText = useCallback((text) => {
-    setActiveText(text);
-    startTextTimer();
-  }, [ setActiveText, removeAttackedEnemies, attackedIdxs ]);
 
   let textTimer = null;
   const killTextTimer = () => {
@@ -103,17 +113,22 @@ function Store({children}) {
     setError('');
     setText(text);
   }, [ setText, setError ]);
+  
+  const submitText = useCallback((text) => {
+    setActiveText(text);
+    startTextTimer();
+  }, [ setActiveText, startTextTimer ]);
 
   return (
     <StoreContext.Provider 
       value={{
         text: text,
         updateText: updateText,
-        enemies: enemies,
+        entities: entities,
         matchedIdxs: matchedIdxs,
         attackedIdxs: attackedIdxs,
-        generateEnemies: generateEnemies,
-        getMatchedEnemies: getMatchedEnemies,
+        generateEntities: generateEntities,
+        getMatchedEntities: getMatchedEntities,
         restartGame: restartGame,
         submitText: submitText,
         activeText: activeText,

@@ -1,17 +1,15 @@
 
 import { useEffect, useContext, useState, useRef, useMemo } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { StoreContext } from '../../store/context';
 import { getColor } from '../../util/theme';
 
-import EnemyGrid from './enemy-grid';
+import EnemiesGrid from './enemies-grid';
 
-const MAX_WIDTH = 710;
+const MAX_WIDTH = 750;
 const DELTA_X = 50;
 const HEIGHT = 25;
 const BUFFER = 10;
-
-
 const MOVE_TIME = 1000;
 
 const S = {};
@@ -21,6 +19,7 @@ S.Swarm = styled('div')`
   width:${MAX_WIDTH}px;
   top:1rem;
 
+  /* animate movement */
   ${'' /* transition: left .5s, top .5s; */}
 
   >ul{
@@ -30,9 +29,18 @@ S.Swarm = styled('div')`
 `
 
 S.ActiveText = styled('p')`
-  color: ${getColor('purple')};
+  color: ${getColor('white')};
   text-align:center;
   
+  ${p => p.isActive ? css`
+    margin-top:0;
+    opacity:1;
+  `:css`
+    margin-top:3rem;
+    opacity:0;
+  `}
+
+  transition: margin-top .2s, opacity .5s;
 `
 
 const delay = 1;
@@ -61,6 +69,7 @@ function Enemies({ matchString }) {
     };
   }, []);
 
+  /* TODO: rework this whole thing - it's stupid */
   useEffect(() => {
     if(direction < 0){
       /* movin LEFT */
@@ -97,6 +106,10 @@ function Enemies({ matchString }) {
     return yPos * HEIGHT;
   }, [yPos]);
 
+  const realActiveText = useMemo(() => {
+    return activeText ? `ATTACKING: "${activeText}"` : ''
+  }, [activeText]);
+
 
   useEffect(() => {
     if(!isMoving){
@@ -106,11 +119,9 @@ function Enemies({ matchString }) {
 
   return (
     <S.Swarm style={{ left: x, top: topPos }}>
-      <EnemyGrid />
+      <EnemiesGrid />
       <p>{leftPos}</p>
-      {activeText && (
-        <S.ActiveText>{`ATTACKING: "${activeText}"`}</S.ActiveText>
-      )}
+      <S.ActiveText isActive={!!realActiveText}>{realActiveText}</S.ActiveText>
     </S.Swarm>
   );
 }

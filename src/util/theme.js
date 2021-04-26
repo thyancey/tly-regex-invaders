@@ -1,6 +1,3 @@
-import { css } from 'styled-components';
-
-/* COLORS */
 export const listColors = () => {
   return Object.keys(store.color);
 }

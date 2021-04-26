@@ -1,14 +1,11 @@
 import styled, { css } from 'styled-components';
 import { getColor } from '../../util/theme';
 
-const WIDTH = 150;
-const SPACER_WIDTH = 35;
-
 const S = {};
-S.Enemy = styled('div')`
-  position: absolute;
+S.Entity = styled('div')`
+  display:inline-block;
+  position:relative;
 
-  width: ${WIDTH}px;
   height: 100%;
 
   padding: 1rem 2rem;
@@ -32,19 +29,29 @@ S.Enemy = styled('div')`
     box-shadow: 0 0 .5rem .1rem ${getColor('blue')};
     border: .25rem solid ${getColor('blue')};
   `: css`
-    color: ${getColor('red')};
-    border-color: ${getColor('red')};
-    box-shadow: 0 0 .5rem .1rem ${getColor('red')};
-    border: .25rem solid ${getColor('red')};
+    color: ${getColor(p.baseColor)};
+    border-color: ${getColor(p.baseColor)};
+    box-shadow: 0 0 .5rem .1rem ${getColor(p.baseColor)};
+    border: .25rem solid ${getColor(p.baseColor)};
   `}
 
-  ${p => p.isAttacked && css`
+  ${p => p.isKilled && css`
     color: ${getColor('grey')};
     border-color: ${getColor('grey')};
     box-shadow: 0 0 .5rem .1rem ${getColor('grey')};
     border: .25rem solid ${getColor('grey')};
     opacity: .5;
   `};
+
+  ${p => p.isAttacked && css`
+    color: ${getColor('white')};
+    border-color: ${getColor('white')};
+    box-shadow: 0 0 .5rem .1rem ${getColor('white')};
+    border: .25rem solid ${getColor('white')};
+    opacity: 1;
+  `};
+
+  transition: all .2s;
 
   text-align:center;
 
@@ -57,12 +64,17 @@ S.Text = styled('p')`
 
 `;
 
-function Enemy({ text, row, col, isMatched, isAttacked }) {
+function Entity({ type, text, isMatched, isAttacked, isKilled, givenStyle }) {
   return (
-    <S.Enemy isMatched={isMatched} isAttacked={isAttacked} style={{ left: col * (WIDTH + SPACER_WIDTH) }}>
+    <S.Entity 
+      baseColor={type === 'hostile' ? 'red' : 'green'}
+      isMatched={isMatched} 
+      style={givenStyle ? givenStyle : null}
+      isAttacked={isAttacked} 
+      isKilled={isKilled} >
       <S.Text>{`${text}`}</S.Text>
-    </S.Enemy>
+    </S.Entity>
   );
 }
 
-export default Enemy;
+export default Entity;
