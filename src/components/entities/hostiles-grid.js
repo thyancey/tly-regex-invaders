@@ -27,7 +27,7 @@ S.Row = styled('div')`
 `
 function HostilesGrid() {
   const { getMatchedEntities } = useContext(StoreContext);
-
+  
   const sortedGrid = useMemo(() => {
     let retVal = [];
     getMatchedEntities('hostile').forEach(e => {
@@ -48,7 +48,7 @@ function HostilesGrid() {
     });
 
     return retVal.reverse();
-  }, [getMatchedEntities]);
+  }, [ getMatchedEntities ]);
 
 
   return (

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+import { useContext, useMemo } from 'react';
 import { getColor } from '../util/theme';
+import { StoreContext } from '../store/context';
 
 import Hostiles from './entities/hostiles';
 import Friendlies from './entities/friendlies';
@@ -50,10 +52,12 @@ S.Bg = styled('div')`
 `
 
 function Main() {
+  const { levelData } = useContext(StoreContext);
+
   return (
     <S.Main >
       <S.Hostiles>
-        <Hostiles/>
+        <Hostiles numEnemies={ levelData.enemies }/>
       </S.Hostiles>
       <S.Friendlies>
         <Friendlies/>

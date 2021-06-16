@@ -1,7 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { StoreContext } from './context';
+import data from './data.json';
 
-import { generateFromWordList, matchWithinThisGroup, DEFAULT_COUNT_HOSTILES, DEFAULT_COUNT_FRIENDLIES, WORD_LIST_HOSTILE, WORD_LIST_FRIENDLY } from '../util';
+import { generateFromWordList, matchWithinThisGroup, WORD_LIST_HOSTILE, WORD_LIST_FRIENDLY } from '../util';
 
 function Store({children}) {
   const [ loaded, setLoaded ] = useState(false);
@@ -13,10 +14,30 @@ function Store({children}) {
   const [ killedIdxs, setKilledIdxs ] = useState([]);
   const [ killActive, setKillActive ] = useState(false);
   const [ error, setError ] = useState('');
+  const [ levelDefinitions ] = useState(data.levels);
+  const [ expressions ] = useState(data.expressions);
+  const [ levelIdx, setLevelIdx ] = useState(0);
+  const [ score, setScore ] = useState(0);
 
   const onError = (e) => {
     setError(e)
   }
+
+  const levelData = useMemo(() => (
+    {
+      idx: levelIdx,
+      label: levelIdx + 1,
+      ...levelDefinitions[levelIdx]
+    }
+  ),[ levelIdx, levelDefinitions ]);
+  
+  const numHostiles = useMemo(() => 
+    levelData.hostiles
+  , [ levelData ]);
+
+  const numFriendlies = useMemo(() => 
+    levelData.friendlies
+  , [ levelData ]);
 
   useEffect(() => {
     const matchedIdxs = matchWithinThisGroup(entities, text, onError);
@@ -28,8 +49,8 @@ function Store({children}) {
     setAttackedIdxs(matchedIdxs);
   }, [ activeText, entities, setAttackedIdxs ]);
 
-  const generateEntities = useCallback((numHostiles = DEFAULT_COUNT_HOSTILES, numFriendlies = DEFAULT_COUNT_FRIENDLIES) => {
-    let friendlies = generateFromWordList(numFriendlies, WORD_LIST_FRIENDLY).map((tE, i) => {
+  const generateEntities = useCallback(() => {
+    let friendlies = generateFromWordList(numFriendlies, WORD_LIST_FRIENDLY, true).map((tE, i) => {
       return {
         text: tE,
         idx: i,
@@ -48,22 +69,16 @@ function Store({children}) {
     });
 
     setEntities(friendlies.concat(hostiles));
-  }, [ setEntities ]);
-  
+  }, [ setEntities, numHostiles, numFriendlies ]);
+
 
   useEffect(() => {
     if(!loaded){
       setLoaded(true);
-      generateEntities();
+      // generateEntities();
     }
   }, [ loaded, generateEntities ]); 
-  
-  const restartGame = useCallback(() => {
-    setMatchedIdxs([]);
-    setKilledIdxs([]);
-    setAttackedIdxs([]);
-    generateEntities();
-  }, [ generateEntities ]);
+
   
   const getMatchedEntities = useCallback((type = 'hostile') => {
     return entities.filter(e => e.type === type).map(e => {
@@ -120,6 +135,46 @@ function Store({children}) {
     startTextTimer();
   }, [ setActiveText, startTextTimer ]);
 
+
+  const setLevel = useCallback((levelIdx) => {
+    setMatchedIdxs([]);
+    setKilledIdxs([]);
+    setAttackedIdxs([]);
+
+    setLevelIdx(levelIdx);
+  });
+    
+  const nextLevel = useCallback(() => {
+    if(levelIdx < levelDefinitions.length - 1){
+      setLevel(levelIdx + 1);
+    }else{
+      console.error('TODO: end of game')
+    }
+  }, [ levelIdx, levelDefinitions, setLevel ]);
+  
+  const prevLevel = useCallback(() => {
+    if(levelIdx > 0){
+      setLevel(levelIdx - 1);
+    }else{
+      console.error('TODO: already on first level')
+    }
+  }, [ levelIdx, setLevel ]);
+
+  useEffect(() => {
+    generateEntities();
+  }, [ levelIdx ]); 
+
+  const restartGame = useCallback(() => {
+    setLevel(0);
+  }, [ setLevel ]);
+
+  const activeExpressions = useMemo(() =>
+    expressions.map(exp => ({
+      value: exp.value,
+      active: levelData.expressions.includes(exp.value)
+    })), [ levelData, expressions ]);
+
+
   return (
     <StoreContext.Provider 
       value={{
@@ -134,6 +189,12 @@ function Store({children}) {
         restartGame: restartGame,
         submitText: submitText,
         activeText: activeText,
+        activeExpressions: activeExpressions,
+        levelData: levelData,
+        nextLevel: nextLevel,
+        prevLevel: prevLevel,
+        score: score,
+        setScore: setScore,
         error: error
       }}>
       {children}

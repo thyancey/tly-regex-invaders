@@ -1,0 +1,50 @@
+{
+  "config":{
+  },
+  "expressions": [
+    {
+      "value": "["
+    },{
+      "value": "]"
+    },{
+      "value": "A"
+    },{
+      "value": "a"
+    },{
+      "value": "?"
+    },{
+      "value": "*"
+    },{
+      "value": "&"
+    },{
+      "value": "."
+    },{
+      "value": "\\"
+    },{
+      "value": "/"
+    }
+  ],
+  "levels":[
+    {
+      "title": "easy",
+      "hostiles": 5,
+      "friendlies": 9,
+      "timeLimit":-1,
+      "expressions": [ "[", "]", "A", "a" ]
+    },
+    {
+      "title": "refresh",
+      "hostiles": 1,
+      "friendlies": 1,
+      "timeLimit":-1,
+      "expressions": [ "*", "&", ".", "\\", "/" ]
+    },
+    {
+      "title": "hard",
+      "hostiles": 15,
+      "friendlies": 5,
+      "timeLimit":-1,
+      "expressions": [ "[", "]", "A", "a", "?", "*", "&", ".", "\\", "/" ]
+    }
+  ]
+}

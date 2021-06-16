@@ -20,12 +20,19 @@ export const WORD_LIST_FRIENDLY = [
   ':D',
   'g00d b0i',
   'SmIlE',
-  ' GOOD TIMES '
+  ' GOOD TIMES ',
+  'chocolate cake',
+  'saturdays',
+  'a BiG 0l huug',
 ]
 
-export const generateFromWordList = (requested = -1, wordList) => {
+export const generateFromWordList = (requested = -1, wordList, overrideRequested) => {
   let retVal = [];
-  const numEntries = (requested < 0 || requested > wordList.length) ? wordList.length : requested;
+  let numEntries = requested;
+  if(!overrideRequested && (requested < 0 || requested > wordList.length)){
+    numEntries = wordList.length;
+  }
+  
   for(let i = 0; i < numEntries; i++){
     retVal.push( wordList[Math.floor(Math.random() * wordList.length)] );
   }

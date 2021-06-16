@@ -9,28 +9,62 @@ const S = {};
 S.Footer = styled('div')`
   position:relative;
 
-  p{
-    margin-left:1rem;
-  }
   text-align:center;
 `;
 
-S.StartButton = styled('div')`
-  font-size: 2.5rem;
+S.Buttons = styled('div')`
+  display: grid;
+  grid-template-columns: 15% 85%;
+  grid-template-rows: 40% 30% 30%;
+
   right: 0;
   top: 0;
-  margin: 1rem;
-  text-align:center;
-  padding: 2rem;
   position: absolute;
+  height:100%;
+  width: 30rem;
+`;
+
+S.UiButton = styled('div')`
+  font-size: 2.5rem;
+  text-align:center;
   border: 2px solid ${getColor('grey')};
   color: ${getColor('grey')};
-    cursor: pointer;
+  cursor: pointer;
+  position:relative;
 
   &:hover{
     border: 2px solid ${getColor('blue')};
     color: ${getColor('blue')};
   }
+
+  >p{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+  }
+`;
+
+S.LevelInfo = styled(S.UiButton)`
+  font-size: 1.5rem;
+  line-height: 1.5rem;
+  grid-column: 1 / span 2;
+  grid-row: 1 / 1;
+`;
+
+S.StartButton = styled(S.UiButton)`
+  grid-column: 2;
+  grid-row: 2 / span 2;
+`;
+
+S.PrevButton = styled(S.UiButton)`
+  grid-column: 1;
+  grid-row: 2;
+`;
+
+S.NextButton = styled(S.UiButton)`
+  grid-column: 1;
+  grid-row: 3;
 `;
 
 S.TextInput = styled('input')`
@@ -90,7 +124,7 @@ S.Available = styled('div')`
 
 `
 
-S.AvailableItem = styled('p')`
+S.ActiveExpressions = styled('p')`
   font-size: 2.5rem;
   display:inline-block;
   color: ${getColor('grey')};
@@ -106,51 +140,24 @@ const onKeyDown = (key, value, submitText) => {
 }
 
 function Footer() {
-  const { updateText, restartGame, submitText, error, text } = useContext(StoreContext);
-
-  const availableItems = [
-    {
-      value: '[',
-      active: true
-    },{
-      value: ']',
-      active: true
-    },{
-      value: 'A',
-      active: true
-    },{
-      value: 'a',
-      active: true
-    },{
-      value: '?',
-      active: false
-    },{
-      value: '*',
-      active: false
-    },{
-      value: '&',
-      active: true
-    },{
-      value: '.',
-      active: false
-    },{
-      value: '\\',
-      active: false
-    },{
-      value: '/',
-      active: false
-    },
-  ]
+  const { updateText, restartGame, submitText, error, text, nextLevel, prevLevel, activeExpressions } = useContext(StoreContext);
+  
+  const { levelData } = useContext(StoreContext);
 
   return (
     <S.Footer>
       <Legend />
       <S.TextInput value={text} error={error} placeholder={'enter a regex and hit enter'} type="text" onChange={(e) => { updateText(e.target.value)}} onKeyDown={e => onKeyDown(e.key, e.target.value, submitText)} />
-      <S.StartButton onClick={e => restartGame()}>{'RESTART'}</S.StartButton>
+      <S.Buttons>
+        <S.LevelInfo><p>{`level: ${levelData.label} hostiles: ${levelData.hostiles}`}</p></S.LevelInfo>
+        <S.PrevButton onClick={e => nextLevel()}><p>{'>'}</p></S.PrevButton>
+        <S.NextButton onClick={e => prevLevel()}><p>{'<'}</p></S.NextButton>
+        <S.StartButton onClick={e => restartGame()}><p>{'RESTART'}</p></S.StartButton> 
+      </S.Buttons>
       <S.Available>
-        <S.AvailableItem key={-1} active={false}>{'available: '}</S.AvailableItem>
-        {availableItems.map((a,i) => (
-          <S.AvailableItem key={i} active={a.active}>{a.value}</S.AvailableItem>
+        <S.ActiveExpressions key={-1} active={false}>{'available: '}</S.ActiveExpressions>
+        {activeExpressions.map((a,i) => (
+          <S.ActiveExpressions key={i} active={a.active}>{a.value}</S.ActiveExpressions>
         ))}
       </S.Available>
     </S.Footer>
