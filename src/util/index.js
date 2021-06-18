@@ -1,35 +1,9 @@
 const CHARACTERS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-export const WORD_LIST_HOSTILE = [
-  'evil',
-  'bad',
-  'ANGRY',
-  'l0ser',
-  'nasty gurl',
-  'angry',
-  '>:(',
-  'sh!t!',
-  'h@te',
-  ' not good ',
-  'bad words. '
-]
-
-export const WORD_LIST_FRIENDLY = [
-  'friend',
-  'HAPPY PAL',
-  ':D',
-  'g00d b0i',
-  'SmIlE',
-  ' GOOD TIMES ',
-  'chocolate cake',
-  'saturdays',
-  'a BiG 0l huug',
-]
-
-export const generateFromWordList = (requested = -1, wordList, overrideRequested) => {
+export const generateFromWordList = (requested = -1, wordList) => {
   let retVal = [];
   let numEntries = requested;
-  if(!overrideRequested && (requested < 0 || requested > wordList.length)){
+  if(requested < 0 || requested > wordList.length){
     numEntries = wordList.length;
   }
   

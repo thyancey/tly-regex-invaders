@@ -31,11 +31,11 @@ function Store({children}) {
     }
   ),[ levelIdx, levelDefinitions ]);
   
-  const numHostiles = useMemo(() => 
+  const activeHostiles = useMemo(() => 
     levelData.hostiles
   , [ levelData ]);
 
-  const numFriendlies = useMemo(() => 
+  const activeFriendlies = useMemo(() => 
     levelData.friendlies
   , [ levelData ]);
 
@@ -50,7 +50,7 @@ function Store({children}) {
   }, [ activeText, entities, setAttackedIdxs ]);
 
   const generateEntities = useCallback(() => {
-    let friendlies = generateFromWordList(numFriendlies, WORD_LIST_FRIENDLY, true).map((tE, i) => {
+    let friendlies = generateFromWordList(-1, activeFriendlies).map((tE, i) => {
       return {
         text: tE,
         idx: i,
@@ -59,7 +59,7 @@ function Store({children}) {
       };
     });
 
-    let hostiles = generateFromWordList(numHostiles, WORD_LIST_HOSTILE).map((tE, i) => {
+    let hostiles = generateFromWordList(-1, activeHostiles).map((tE, i) => {
       return {
         text: tE,
         idx: i + friendlies.length,
@@ -69,7 +69,7 @@ function Store({children}) {
     });
 
     setEntities(friendlies.concat(hostiles));
-  }, [ setEntities, numHostiles, numFriendlies ]);
+  }, [ setEntities, activeHostiles, activeFriendlies ]);
 
 
   useEffect(() => {

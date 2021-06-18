@@ -27,22 +27,63 @@
   "levels":[
     {
       "title": "easy",
-      "hostiles": 5,
-      "friendlies": 9,
+      "hostiles": [
+        "evil",
+        "bad",
+        "ANGRY",
+        "l0ser",
+        "nasty gurl",
+        "angry",
+        ">:(",
+        "sh!t!",
+        "h@te",
+        " not good ",
+        "bad words. "
+      ],
+      "friendlies": [
+        "friend",
+        "HAPPY PAL",
+        ":D",
+        "g00d b0i",
+        "SmIlE",
+        " GOOD TIMES ",
+        "chocolate cake",
+        "saturdays",
+        "a BiG 0l huug"
+      ],
       "timeLimit":-1,
       "expressions": [ "[", "]", "A", "a" ]
     },
     {
       "title": "refresh",
-      "hostiles": 1,
-      "friendlies": 1,
+      "hostiles": [
+        "evil"
+      ],
+      "friendlies": [
+        "a BiG 0l huug"
+      ],
       "timeLimit":-1,
       "expressions": [ "*", "&", ".", "\\", "/" ]
     },
     {
       "title": "hard",
-      "hostiles": 15,
-      "friendlies": 5,
+      "hostiles": [
+        "evil",
+        "bad",
+        "ANGRY",
+        "l0ser",
+        "nasty gurl",
+        "angry",
+        ">:(",
+        "sh!t!",
+        "h@te",
+        " not good ",
+        "bad words. "
+      ],
+      "friendlies": [
+        ":D",
+        " GOOD TIMES "
+      ],
       "timeLimit":-1,
       "expressions": [ "[", "]", "A", "a", "?", "*", "&", ".", "\\", "/" ]
     }
