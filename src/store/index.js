@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import { StoreContext } from './context';
 import data from './data.json';
 
-import { generateFromWordList, matchWithinThisGroup, WORD_LIST_HOSTILE, WORD_LIST_FRIENDLY } from '../util';
+import { generateFromWordList, matchWithinThisGroup, restrictTextToExpressions } from '../util';
 
 function Store({children}) {
   const [ loaded, setLoaded ] = useState(false);
@@ -20,6 +20,7 @@ function Store({children}) {
   const [ score, setScore ] = useState(0);
 
   const onError = (e) => {
+    console.log('onError', e)
     setError(e)
   }
 
@@ -124,10 +125,14 @@ function Store({children}) {
       setActiveText('');
     }, 1000);
   }
-  const updateText = useCallback((text) => {
-    setError('');
-    setText(text);
-  }, [ setText, setError ]);
+
+  const updateText = useCallback(t => {
+    const newText = restrictTextToExpressions(t, levelData.expressions);
+    if(newText !== text){
+      setError('');
+      setText(newText);
+    }
+  }, [ text, setText, setError, levelData ]);
   
   const submitText = useCallback((text) => {
     setActiveText(text);
@@ -162,7 +167,7 @@ function Store({children}) {
 
   useEffect(() => {
     generateEntities();
-  }, [ levelIdx ]); 
+  }, [ levelIdx, generateEntities ]); 
 
   const restartGame = useCallback(() => {
     setLevel(0);

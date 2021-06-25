@@ -47,6 +47,31 @@ export const matchThisString = (str1, str2) => {
   }
 }
 
+export const checkForValidRegex = (regexString) => {
+  try{
+    return new RegExp(regexString);
+  }catch(e){
+    return `${regexString}`;
+  }
+}
+
+// export const matchThisRegex = (str1, regexString, onError) => {
+//   console.log('matchThisRegex', str1, regexString)
+//   if(!regexString){
+//     return false;
+//   }
+
+//   try{
+//     const re = new RegExp(regexString);
+//     return str1.match(re);
+//   }catch(e){
+//     let message = `${regexString}`;
+//     onError ? onError(message) : console.error(message);
+//     return false;
+//   }
+// }
+
+
 /* assuming group is shape below, only return items with matching idx
   [
     {
@@ -55,23 +80,37 @@ export const matchThisString = (str1, str2) => {
   ]
 */
 export const matchWithinThisGroup = (group, text, onError) => {
-  return group.filter(g => matchThisRegex(g.text, text, onError)).map(g => g.idx);
+  if(!text) return [];
+  
+  const regexResult = checkForValidRegex(text);
+  if(typeof regexResult === 'string'){
+    onError ? onError(regexResult) : console.error(regexResult);
+    return [];
+  }else{
+    return group.filter(g => matchThisRegex(g.text, regexResult, onError)).map(g => g.idx);
+  }
 }
 
+export const matchThisRegex = (str1, regex) => {
+  return str1.match(regex);
+}
 
-export const matchThisRegex = (str1, regexString, onError) => {
-  if(!regexString){
-    return false;
+export const characterMatchesExpressions = (char, expressions) => {
+  if(expressions.includes('A') && /[A-Z]/.test(char)){
+    return true;
   }
+  else if(expressions.includes('a') && /[a-z]/.test(char)){
+    return true;
+  }
+  else if(expressions.includes('0') && !isNaN(char)){
+    return true;
+  }
+  
+  return expressions.includes(char);
+}
 
-  try{
-    const re = new RegExp(regexString);
-    return str1.match(re);
-  }catch(e){
-    let message = `${regexString}`;
-    onError ? onError(message) : console.error(message);
-    return false;
-  }
+export const restrictTextToExpressions = (text, expressions) => {
+  return ([...text].filter(c => characterMatchesExpressions(c, expressions))).join('');
 }
 
 export const ENTITY_WIDTH = 150;

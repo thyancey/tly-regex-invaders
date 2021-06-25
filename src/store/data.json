@@ -3,13 +3,17 @@
   },
   "expressions": [
     {
-      "value": "["
-    },{
-      "value": "]"
-    },{
       "value": "A"
     },{
       "value": "a"
+    },{
+      "value": "0"
+    },{
+      "value": "-"
+    },{
+      "value": "["
+    },{
+      "value": "]"
     },{
       "value": "?"
     },{
@@ -22,6 +26,8 @@
       "value": "\\"
     },{
       "value": "/"
+    },{
+      "value": "^"
     }
   ],
   "levels":[
@@ -52,7 +58,7 @@
         "a BiG 0l huug"
       ],
       "timeLimit":-1,
-      "expressions": [ "[", "]", "A", "a" ]
+      "expressions": [ "[", "]", "a", "0", "-", "*" ]
     },
     {
       "title": "refresh",
@@ -63,7 +69,7 @@
         "a BiG 0l huug"
       ],
       "timeLimit":-1,
-      "expressions": [ "*", "&", ".", "\\", "/" ]
+      "expressions": [ "*", "&", ".", "\\", "/", "a", "-"]
     },
     {
       "title": "hard",
@@ -85,7 +91,7 @@
         " GOOD TIMES "
       ],
       "timeLimit":-1,
-      "expressions": [ "[", "]", "A", "a", "?", "*", "&", ".", "\\", "/" ]
+      "expressions": [ "[", "]", "?", "*", "&", ".", "\\", "/" ]
     }
   ]
 }

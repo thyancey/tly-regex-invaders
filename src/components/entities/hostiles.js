@@ -81,7 +81,7 @@ function Hostiles() {
         setX(nextX);
       }else{
         setDirection(1);
-        if(ALLOW_DESCEND) setYPos(yPos + 1);
+        if(ALLOW_DESCEND) setYPos(y => y + 1);
       }
     }else if(direction > 0){
       /* movin RIGHT */
@@ -92,11 +92,11 @@ function Hostiles() {
         setX(nextX);
       }else{
         setDirection(-1);
-        if(ALLOW_DESCEND) setYPos(yPos + 1);
+        if(ALLOW_DESCEND) setYPos(y => y + 1);
       }
     }
 
-  }, [ windowWidth, counter, setDirection, setX ]);
+  }, [ windowWidth, counter, direction, setDirection, setX ]);
 
   const leftPos = useMemo(() => {
     return x * 50;
