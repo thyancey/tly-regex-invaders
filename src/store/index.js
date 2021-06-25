@@ -111,6 +111,14 @@ function Store({children}) {
   }, [ killActive, setKillActive, attackedIdxs, killedIdxs, setKilledIdxs ]);
 
 
+  useEffect(() => {
+    setMatchedIdxs([]);
+    setKilledIdxs([]);
+    setAttackedIdxs([]);
+    setText('');
+    setError('');
+  }, [ levelIdx ]);
+
   let textTimer = null;
   const killTextTimer = () => {
     if(textTimer){
@@ -140,38 +148,30 @@ function Store({children}) {
     startTextTimer();
   }, [ setActiveText, startTextTimer ]);
 
-
-  const setLevel = useCallback((levelIdx) => {
-    setMatchedIdxs([]);
-    setKilledIdxs([]);
-    setAttackedIdxs([]);
-
-    setLevelIdx(levelIdx);
-  });
     
   const nextLevel = useCallback(() => {
     if(levelIdx < levelDefinitions.length - 1){
-      setLevel(levelIdx + 1);
+      setLevelIdx(levelIdx + 1);
     }else{
       console.error('TODO: end of game')
     }
-  }, [ levelIdx, levelDefinitions, setLevel ]);
+  }, [ levelIdx, levelDefinitions, setLevelIdx ]);
   
   const prevLevel = useCallback(() => {
     if(levelIdx > 0){
-      setLevel(levelIdx - 1);
+      setLevelIdx(levelIdx - 1);
     }else{
       console.error('TODO: already on first level')
     }
-  }, [ levelIdx, setLevel ]);
+  }, [ levelIdx, setLevelIdx ]);
 
   useEffect(() => {
     generateEntities();
   }, [ levelIdx, generateEntities ]); 
 
   const restartGame = useCallback(() => {
-    setLevel(0);
-  }, [ setLevel ]);
+    setLevelIdx(0);
+  }, [ setLevelIdx ]);
 
   const activeExpressions = useMemo(() =>
     expressions.map(exp => ({

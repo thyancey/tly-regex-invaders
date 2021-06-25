@@ -149,7 +149,7 @@ function Footer() {
       <Legend />
       <S.TextInput value={text} error={error} placeholder={'enter a regex and hit enter'} type="text" onChange={(e) => { updateText(e.target.value)}} onKeyDown={e => onKeyDown(e.key, e.target.value, submitText)} />
       <S.Buttons>
-        <S.LevelInfo><p>{`level: ${levelData.label} hostiles: ${levelData.hostiles}`}</p></S.LevelInfo>
+        <S.LevelInfo><p>{`level: ${levelData.label}`}</p></S.LevelInfo>
         <S.PrevButton onClick={e => nextLevel()}><p>{'>'}</p></S.PrevButton>
         <S.NextButton onClick={e => prevLevel()}><p>{'<'}</p></S.NextButton>
         <S.StartButton onClick={e => restartGame()}><p>{'RESTART'}</p></S.StartButton> 
